@@ -1,0 +1,84 @@
+{
+  "run_id": "SUB-002-20261119-221114",
+  "submission_id": "SUB-002",
+  "label": "edge case 1 - incomplete submission",
+  "vendor_name": "Novatech Components LLP",
+  "country": "IN",
+  "decision": "PENDING",
+  "risk_score": 64,
+  "risk_band": "Medium",
+  "issues": [
+    {
+      "code": "MISSING_FIELD",
+      "severity": "pending",
+      "stage": "COMPLETENESS",
+      "message": "Required field 'contact.phone' is missing.",
+      "action": "Provide the contact phone ('contact.phone')."
+    },
+    {
+      "code": "MISSING_FIELD",
+      "severity": "pending",
+      "stage": "COMPLETENESS",
+      "message": "Required field 'banking.ifsc' is missing.",
+      "action": "Provide the bank ifsc required for vendors in India ('banking.ifsc')."
+    },
+    {
+      "code": "MISSING_DOCUMENT",
+      "severity": "pending",
+      "stage": "COMPLETENESS",
+      "message": "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached.",
+      "action": "Upload the bank-issued account confirmation letter."
+    }
+  ],
+  "stages": [
+    {
+      "name": "INGEST",
+      "status": "OK",
+      "findings": [
+        "loaded submission, structure valid"
+      ]
+    },
+    {
+      "name": "COMPLETENESS",
+      "status": "WARN",
+      "findings": [
+        "Required field 'contact.phone' is missing.",
+        "Required field 'banking.ifsc' is missing.",
+        "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached."
+      ]
+    },
+    {
+      "name": "FORMAT",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "CONSISTENCY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "IDENTITY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "DECISION",
+      "status": "WARN",
+      "findings": [
+        "3 issue(s) evaluated (reject: 0, pending: 3, info: 0)",
+        "policy outcome: PENDING - risk 64/100 (Medium)"
+      ]
+    }
+  ],
+  "started_at": "2026-11-19 16:41:14 UTC",
+  "duration_ms": 6,
+  "input_file": "submission.json",
+  "followup_file": "followup.md"
+}

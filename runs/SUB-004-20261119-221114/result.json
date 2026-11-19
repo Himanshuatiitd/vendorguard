@@ -1,0 +1,68 @@
+{
+  "run_id": "SUB-004-20261119-221114",
+  "submission_id": "SUB-004",
+  "label": "edge case 3 - valid-looking GSTIN that fails the checksum",
+  "vendor_name": "Meridian Solar Energy Pvt Ltd",
+  "country": "IN",
+  "decision": "PENDING",
+  "risk_score": 88,
+  "risk_band": "Medium",
+  "issues": [
+    {
+      "code": "TAX_ID_CHECKSUM_FAIL",
+      "severity": "pending",
+      "stage": "FORMAT",
+      "message": "GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated.",
+      "action": "Re-check the GSTIN against the GST certificate and re-upload the corrected certificate."
+    }
+  ],
+  "stages": [
+    {
+      "name": "INGEST",
+      "status": "OK",
+      "findings": [
+        "loaded submission, structure valid"
+      ]
+    },
+    {
+      "name": "COMPLETENESS",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "FORMAT",
+      "status": "WARN",
+      "findings": [
+        "GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated."
+      ]
+    },
+    {
+      "name": "CONSISTENCY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "IDENTITY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "DECISION",
+      "status": "WARN",
+      "findings": [
+        "1 issue(s) evaluated (reject: 0, pending: 1, info: 0)",
+        "policy outcome: PENDING - risk 88/100 (Medium)"
+      ]
+    }
+  ],
+  "started_at": "2026-11-19 16:41:14 UTC",
+  "duration_ms": 2,
+  "input_file": "submission.json",
+  "followup_file": "followup.md"
+}

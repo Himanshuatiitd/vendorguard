@@ -1,0 +1,656 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VendorGuard - Vendor Onboarding Verification</title>
+<style>
+:root{--bg:#0d1117;--panel:#161b22;--line:#232a33;--text:#e6edf3;--mut:#8b949e;
+--green:#3fb950;--yellow:#d29922;--red:#f85149;--blue:#58a6ff;--violet:#bc8cff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 "Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:34px 20px 60px}
+h1{font-size:21px;margin:0 0 3px}
+.sub{color:var(--mut);margin-bottom:26px}
+.sub code{background:var(--panel);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+header.hero{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+header.hero .sub{margin-bottom:22px}
+.srv{font-size:12px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.srv.live{color:var(--green);border-color:rgba(63,185,80,.4);background:rgba(63,185,80,.08)}
+.srv.offline{color:var(--yellow);border-color:rgba(210,153,34,.4);background:rgba(210,153,34,.08)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:22px}
+.panelhead h2{font-size:17px;margin:0 0 3px}
+.panelhead .mut{font-size:13px}
+.tabs{display:flex;gap:6px;margin:16px 0 14px;flex-wrap:wrap}
+.tab{background:transparent;border:1px solid var(--line);color:var(--mut);padding:7px 13px;border-radius:8px;font:inherit;font-size:13px;cursor:pointer}
+.tab:hover{color:var(--text);border-color:#303945}
+.tab.active{background:#1f2631;border-color:#334155;color:var(--text);font-weight:600}
+.pane{display:none}
+.pane.active{display:block}
+textarea{width:100%;min-height:200px;resize:vertical;background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--text);font:12.5px/1.6 Consolas,monospace;outline:none}
+textarea:focus,input:focus,select:focus{border-color:#3b4b61}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;color:var(--mut)}
+.field .req{color:var(--yellow)}
+input,select{background:#0a0d12;border:1px solid var(--line);border-radius:7px;padding:9px 10px;color:var(--text);font:inherit;outline:none;width:100%}
+input[type=date]{color-scheme:dark}
+.span2{grid-column:1/-1}
+h4.sec{margin:20px 0 10px;font-size:12px;letter-spacing:.7px;text-transform:uppercase;color:var(--mut)}
+.docrow{display:grid;grid-template-columns:170px 1.4fr .9fr .9fr;gap:8px;align-items:center;margin-bottom:8px}
+.docrow .doctitle{font-size:12.5px;color:var(--text)}
+.dochead{display:grid;grid-template-columns:170px 1.4fr .9fr .9fr;gap:8px;font-size:11px;color:var(--mut);margin-bottom:6px}
+.actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:18px}
+button{font:inherit;cursor:pointer;border-radius:8px;padding:9px 16px;border:1px solid var(--line);background:#1f2631;color:var(--text)}
+button:hover:not(:disabled){border-color:#3b4b61}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.primary{background:#238636;border-color:#2ea043;font-weight:600}
+button.primary:hover:not(:disabled){background:#2ea043}
+button.ghost{background:transparent;color:var(--mut)}
+select.compact{width:auto;padding:8px 10px;font-size:13px;color:var(--mut)}
+.hint{color:var(--mut);font-size:12.5px;margin-top:8px}
+.hint code{color:#adbac7}
+.progress{display:flex;align-items:center;gap:10px;margin-top:18px;color:var(--mut);font-size:13px}
+.spinner{width:15px;height:15px;border:2px solid #2a3138;border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
+.verdict{margin-top:20px;border:1px solid var(--line);border-left:4px solid var(--mut);border-radius:10px;padding:18px 20px;background:#12171f}
+.verdict.v-REAL{border-left-color:var(--green)}
+.verdict.v-CHECK{border-left-color:var(--yellow)}
+.verdict.v-FAKE{border-left-color:var(--red)}
+.vhead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.vlabel{font-size:19px;font-weight:700;letter-spacing:.3px}
+.v-REAL .vlabel{color:var(--green)} .v-CHECK .vlabel{color:var(--yellow)} .v-FAKE .vlabel{color:var(--red)}
+.vnote{color:var(--mut);font-size:13px;margin-top:4px;max-width:680px}
+.vright{text-align:right;white-space:nowrap}
+.vrisk{font-size:23px;font-weight:700;margin-top:4px}
+.vrisk span{font-size:12px;color:var(--mut);font-weight:400}
+.vmeta{display:flex;gap:14px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card .n{font-size:26px;font-weight:600}
+.card .n .unit{font-size:13px;color:var(--mut);font-weight:400}
+.card .l{color:var(--mut);font-size:12px;margin-top:2px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th{text-align:left;color:var(--mut);font-size:12px;font-weight:500;padding:10px 14px;border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr.row{cursor:pointer}
+tr.row:hover{background:#1c2129}
+tr.fresh{background:rgba(88,166,255,.06)}
+.mut{color:var(--mut);font-size:12px}
+code{font-family:Consolas,monospace;font-size:12.5px}
+.badge{display:inline-block;padding:2px 11px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.3px}
+.b-APPROVED{background:rgba(63,185,80,.15);color:var(--green)}
+.b-PENDING{background:rgba(210,153,34,.15);color:var(--yellow)}
+.b-REJECTED{background:rgba(248,81,73,.15);color:var(--red)}
+.riskwrap{display:flex;align-items:center;gap:8px}
+.riskbar{width:80px;height:6px;background:#2a3138;border-radius:3px;position:relative;flex:none}
+.riskbar i{position:absolute;top:0;left:0;bottom:0;border-radius:3px}
+.detail{display:none;margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 24px}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px}
+.dhead h2{margin:2px 0 0;font-size:18px}
+.dright{text-align:right}
+.riskbig{font-size:24px;font-weight:700;margin-top:6px}
+.riskbig span{font-size:12px;color:var(--mut);font-weight:400}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--mut);margin:20px 0 8px}
+.stage{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.stage:last-child{border-bottom:none}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
+.d-OK{background:var(--green)} .d-WARN{background:var(--yellow)} .d-FAIL{background:var(--red)}
+.stname{font-weight:600}
+.stag{font-size:11px;margin-left:6px;padding:1px 8px;border-radius:99px}
+.stag.OK{background:rgba(63,185,80,.15);color:var(--green)}
+.stag.WARN{background:rgba(210,153,34,.15);color:var(--yellow)}
+.stag.FAIL{background:rgba(248,81,73,.15);color:var(--red)}
+.find{color:var(--mut);font-size:13px;margin-top:2px}
+.issue{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+.chip{flex:none;font-size:11px;font-weight:600;padding:2px 9px;border-radius:99px;margin-top:1px}
+.sev-reject{background:rgba(248,81,73,.15);color:var(--red)}
+.sev-pending{background:rgba(210,153,34,.15);color:var(--yellow)}
+.sev-info{background:rgba(88,166,255,.15);color:var(--blue)}
+.act{color:var(--mut);font-size:13px;margin-top:2px}
+.meta{color:var(--mut);font-size:12px;margin-top:14px}
+pre{background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:16px;overflow:auto;color:#adbac7;font-size:12.5px;line-height:1.6;white-space:pre-wrap}
+footer{margin-top:34px;color:var(--mut);font-size:12px}
+@media(max-width:720px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .docrow,.dochead{grid-template-columns:1fr 1fr}
+  .docrow .doctitle{grid-column:1/-1}
+  .vright{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <h1>VendorGuard &mdash; Vendor Onboarding Verification</h1>
+      <div class="sub">PS-2 case study &middot; check a real submission below, or click any past run to inspect its audit trail</div>
+    </div>
+    <span class="srv" id="srvstate">checking server&hellip;</span>
+  </header>
+
+  <section class="panel" id="live">
+    <div class="panelhead">
+      <h2>Check a vendor</h2>
+      <div class="mut">Fill the fields, paste JSON / text, or upload a file. The Python pipeline (<code>INGEST &rarr; DECISION</code>) runs in the background and reports whether the vendor looks real, needs more evidence, or is a fraud risk.</div>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="form" type="button">Fill fields</button>
+      <button class="tab" data-tab="json" type="button">Paste JSON</button>
+      <button class="tab" data-tab="text" type="button">Paste text</button>
+      <button class="tab" data-tab="file" type="button">Upload file</button>
+    </div>
+
+    <div class="pane active" id="pane-form">
+      <form id="vendorform" autocomplete="off" onsubmit="return false">
+        <div class="grid">
+          <div class="field"><label>Submission ID <span class="mut">(optional)</span></label><input data-field="submission_id" placeholder="auto-generated if blank"></div>
+          <div class="field"><label>Country <span class="req">*</span></label>
+            <select data-field="country" id="countryselect">
+              <option value="IN">India (IN)</option><option value="US">United States (US)</option>
+              <option value="GB">United Kingdom (GB)</option><option value="DE">Germany (DE)</option>
+              <option value="AE">United Arab Emirates (AE)</option>
+            </select>
+          </div>
+          <div class="field span2"><label>Legal name <span class="req">*</span></label><input data-field="legal_name" placeholder="Anvi Precision Components Pvt Ltd"></div>
+          <div class="field"><label>Tax ID / GSTIN / VAT / EIN <span class="req">*</span></label><input data-field="tax_id" placeholder="27AAAPZ1234C1Z0"></div>
+          <div class="field"><label>Registered address</label><input data-field="registered_address" placeholder="Plot 14, MIDC Andheri East, Mumbai 400093"></div>
+        </div>
+
+        <h4 class="sec">Contact</h4>
+        <div class="grid">
+          <div class="field"><label>Contact name</label><input data-field="contact.name" placeholder="Rohit Anvekar"></div>
+          <div class="field"><label>Email</label><input data-field="contact.email" placeholder="rohit@anviprecision.in"></div>
+          <div class="field"><label>Phone</label><input data-field="contact.phone" placeholder="+91 98200 12345"></div>
+        </div>
+
+        <h4 class="sec">Banking / settlement</h4>
+        <div class="grid">
+          <div class="field"><label>Account holder name</label><input data-field="banking.account_name" placeholder="Anvi Precision Components Pvt Ltd"></div>
+          <div class="field"><label>Account number</label><input data-field="banking.account_number" placeholder="50100234567890"></div>
+          <div class="field"><label>Bank name</label><input data-field="banking.bank_name" placeholder="HDFC Bank"></div>
+          <div class="field"><label>Bank country</label>
+            <select data-field="banking.bank_country">
+              <option value="IN">India (IN)</option><option value="US">United States (US)</option>
+              <option value="GB">United Kingdom (GB)</option><option value="DE">Germany (DE)</option>
+              <option value="AE">United Arab Emirates (AE)</option>
+            </select>
+          </div>
+          <div class="field"><label>Currency</label><input data-field="banking.currency" placeholder="INR"></div>
+          <div class="field code-IN"><label>IFSC <span class="req">*</span></label><input data-field="banking.ifsc" placeholder="HDFC0000123"></div>
+          <div class="field code-US"><label>ABA routing number</label><input data-field="banking.routing_number" placeholder="021000021"></div>
+          <div class="field code-IBAN"><label>IBAN</label><input data-field="banking.iban" placeholder="DE89370400440532013000"></div>
+        </div>
+
+        <h4 class="sec">Documents <span class="mut" style="text-transform:none;letter-spacing:0"> &mdash; leave a row blank to simulate a missing document</span></h4>
+        <div class="dochead"><span>Document</span><span>Filename</span><span>Issued</span><span>Expires</span></div>
+        <div class="docrow" data-doc="tax_certificate">
+          <span class="doctitle">Tax certificate</span>
+          <input data-docfield="filename" placeholder="gst_certificate.pdf"><input data-docfield="issued" type="date"><input data-docfield="expires" type="date">
+        </div>
+        <div class="docrow" data-doc="bank_account_letter">
+          <span class="doctitle">Bank account letter</span>
+          <input data-docfield="filename" placeholder="bank_letter.pdf"><input data-docfield="issued" type="date"><input data-docfield="expires" type="date">
+        </div>
+        <div class="docrow" data-doc="incorporation_certificate">
+          <span class="doctitle">Incorporation cert.</span>
+          <input data-docfield="filename" placeholder="coi.pdf"><input data-docfield="issued" type="date"><input data-docfield="expires" type="date">
+        </div>
+      </form>
+    </div>
+
+    <div class="pane" id="pane-json">
+      <textarea id="jsoninput" spellcheck="false" placeholder='{
+  "submission_id": "REAL-001",
+  "legal_name": "Anvi Precision Components Pvt Ltd",
+  "country": "IN",
+  "tax_id": "27AAAPZ1234C1Z0",
+  "contact": {"name": "Rohit Anvekar", "email": "rohit@anviprecision.in", "phone": "+91 98200 12345"},
+  "banking": {"account_name": "Anvi Precision Components Pvt Ltd", "account_number": "50100234567890",
+              "bank_name": "HDFC Bank", "ifsc": "HDFC0000123", "bank_country": "IN", "currency": "INR"},
+  "documents": [
+    {"type": "tax_certificate", "filename": "gst.pdf", "issued": "2025-04-10", "expires": "2027-08-30"},
+    {"type": "bank_account_letter", "filename": "bank_letter.pdf", "issued": "2026-10-02"},
+    {"type": "incorporation_certificate", "filename": "coi.pdf", "issued": "2019-06-21"}
+  ]
+}'></textarea>
+      <div class="hint">Any JSON object accepted by the pipeline. Dotted keys such as <code>contact.email</code> also work.</div>
+    </div>
+
+    <div class="pane" id="pane-text">
+      <textarea id="textinput" spellcheck="false" placeholder="legal_name: Anvi Precision Components Pvt Ltd
+country: India
+tax_id: 27AAAPZ1234C1Z0
+address: Plot 14, MIDC Andheri East, Mumbai 400093
+
+[contact]
+name: Rohit Anvekar
+email: rohit@anviprecision.in
+phone: +91 98200 12345
+
+[banking]
+account_name: Anvi Precision Components Pvt Ltd
+account_number: 50100234567890
+bank_name: HDFC Bank
+bank_country: IN
+currency: INR
+ifsc: HDFC0000123
+
+document: tax_certificate | gst.pdf | 2025-04-10 | 2027-08-30
+document: bank_account_letter | bank_letter.pdf | 2026-10-02
+document: incorporation_certificate | coi.pdf | 2019-06-21"></textarea>
+      <div class="hint">One <code>key: value</code> per line. Friendly labels work (<code>GSTIN</code>, <code>company name</code>, <code>email</code>), as do <code>[contact]</code> / <code>[banking]</code> sections and the document rows shown above.</div>
+    </div>
+
+    <div class="pane" id="pane-file">
+      <input type="file" id="fileinput" accept=".json,.txt,application/json,text/plain">
+      <div class="hint">Upload a <code>.json</code> submission or a <code>.txt</code> file in the same labelled format. JSON is detected automatically.</div>
+      <pre id="filepreview" class="hidden"></pre>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="verifybtn" type="button">Run verification</button>
+      <select class="compact" id="examplepick">
+        <option value="">Load example&hellip;</option>
+        <option value="real">Valid vendor (expected: real)</option>
+        <option value="fraud">Duplicate tax ID (expected: fake)</option>
+        <option value="incomplete">Missing documents (expected: needs check)</option>
+      </select>
+      <button class="ghost" id="clearbtn" type="button">Clear result</button>
+      <span class="mut" id="statushint"></span>
+    </div>
+
+    <div class="progress hidden" id="progress"><span class="spinner"></span><span id="progresstext">Starting pipeline&hellip;</span></div>
+    <div id="verdictbox"></div>
+  </section>
+
+  <div class="cards" id="cards"></div>
+  <table id="tbl">
+    <thead><tr><th>Run</th><th>Vendor</th><th>Country</th><th>Decision</th><th>Risk</th><th>Issues</th><th>When</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <div class="detail" id="detail"></div>
+  <footer>VendorGuard v1 &middot; history generated 2026-11-19 17:42 UTC &middot; live checks run the same pipeline as <code>run_demo.py</code> &middot; rules documented in ANALYSIS.md</footer>
+</div>
+<script>
+const DATA = {"generated_at": "2026-11-19 17:42 UTC", "runs": [{"run_id": "SUB-001-20261119-221050", "submission_id": "SUB-001", "label": "happy path - complete, consistent, valid", "vendor_name": "Anvi Precision Components Pvt Ltd", "country": "IN", "decision": "APPROVED", "risk_score": 100, "risk_band": "Low", "issues": [], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "OK", "findings": ["no findings"]}, {"name": "FORMAT", "status": "OK", "findings": ["no findings"]}, {"name": "CONSISTENCY", "status": "OK", "findings": ["no findings"]}, {"name": "IDENTITY", "status": "OK", "findings": ["no findings"]}, {"name": "DECISION", "status": "OK", "findings": ["0 issue(s) evaluated (reject: 0, pending: 0, info: 0)", "policy outcome: APPROVED - risk 100/100 (Low)"]}], "started_at": "2026-11-19 16:40:50 UTC", "duration_ms": 22, "input_file": "submission.json", "followup_file": ""}, {"run_id": "SUB-001-20261119-221114", "submission_id": "SUB-001", "label": "happy path - complete, consistent, valid", "vendor_name": "Anvi Precision Components Pvt Ltd", "country": "IN", "decision": "APPROVED", "risk_score": 100, "risk_band": "Low", "issues": [], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "OK", "findings": ["no findings"]}, {"name": "FORMAT", "status": "OK", "findings": ["no findings"]}, {"name": "CONSISTENCY", "status": "OK", "findings": ["no findings"]}, {"name": "IDENTITY", "status": "OK", "findings": ["no findings"]}, {"name": "DECISION", "status": "OK", "findings": ["0 issue(s) evaluated (reject: 0, pending: 0, info: 0)", "policy outcome: APPROVED - risk 100/100 (Low)"]}], "started_at": "2026-11-19 16:41:14 UTC", "duration_ms": 31, "input_file": "submission.json", "followup_file": ""}, {"run_id": "SUB-002-20261119-221114", "submission_id": "SUB-002", "label": "edge case 1 - incomplete submission", "vendor_name": "Novatech Components LLP", "country": "IN", "decision": "PENDING", "risk_score": 64, "risk_band": "Medium", "issues": [{"code": "MISSING_FIELD", "severity": "pending", "stage": "COMPLETENESS", "message": "Required field 'contact.phone' is missing.", "action": "Provide the contact phone ('contact.phone')."}, {"code": "MISSING_FIELD", "severity": "pending", "stage": "COMPLETENESS", "message": "Required field 'banking.ifsc' is missing.", "action": "Provide the bank ifsc required for vendors in India ('banking.ifsc')."}, {"code": "MISSING_DOCUMENT", "severity": "pending", "stage": "COMPLETENESS", "message": "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached.", "action": "Upload the bank-issued account confirmation letter."}], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "WARN", "findings": ["Required field 'contact.phone' is missing.", "Required field 'banking.ifsc' is missing.", "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached."]}, {"name": "FORMAT", "status": "OK", "findings": ["no findings"]}, {"name": "CONSISTENCY", "status": "OK", "findings": ["no findings"]}, {"name": "IDENTITY", "status": "OK", "findings": ["no findings"]}, {"name": "DECISION", "status": "WARN", "findings": ["3 issue(s) evaluated (reject: 0, pending: 3, info: 0)", "policy outcome: PENDING - risk 64/100 (Medium)"]}], "started_at": "2026-11-19 16:41:14 UTC", "duration_ms": 6, "input_file": "submission.json", "followup_file": "followup.md", "followup_text": "# Action required to complete your vendor onboarding\n\n**To:** Meera Nair <meera@novatechcomponents.in>\n**From:** AP Operations - Vendor Onboarding\n**Re:** Submission SUB-002 - Novatech Components LLP\n**Run:** SUB-002-20261119-221114 - decision: PENDING - risk 64/100 (Medium)\n\nHi Meera,\n\nThank you for submitting vendor onboarding for Novatech Components LLP (SUB-002). Verification is underway - we need the 3 item(s) below from you before we can approve you as a vendor.\n\n1. **Missing Field** - Required field 'contact.phone' is missing.\n   *What we need:* Provide the contact phone ('contact.phone').\n2. **Missing Field** - Required field 'banking.ifsc' is missing.\n   *What we need:* Provide the bank ifsc required for vendors in India ('banking.ifsc').\n3. **Missing Document** - Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached.\n   *What we need:* Upload the bank-issued account confirmation letter.\n\nPlease reply with the requested items within 10 business days. Your application stays in *pending* status until then - this is not a rejection, we simply cannot complete verification with the current information.\n\n- AP Operations (automated verification)\n"}, {"run_id": "SUB-003-20261119-221114", "submission_id": "SUB-003", "label": "edge case 2 - subtle cross-field inconsistencies", "vendor_name": "Ravensburger Logistik GmbH", "country": "DE", "decision": "PENDING", "risk_score": 76, "risk_band": "Medium", "issues": [{"code": "NAME_MISMATCH_SUSPECTED", "severity": "pending", "stage": "CONSISTENCY", "message": "Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).", "action": "Provide a bank-issued letter confirming the account is held by the legal entity, or correct the account name."}, {"code": "CURRENCY_MISMATCH", "severity": "pending", "stage": "CONSISTENCY", "message": "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR).", "action": "Confirm the settlement currency; expected EUR for Germany."}], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "OK", "findings": ["no findings"]}, {"name": "FORMAT", "status": "OK", "findings": ["no findings"]}, {"name": "CONSISTENCY", "status": "WARN", "findings": ["Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).", "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR)."]}, {"name": "IDENTITY", "status": "OK", "findings": ["no findings"]}, {"name": "DECISION", "status": "WARN", "findings": ["2 issue(s) evaluated (reject: 0, pending: 2, info: 0)", "policy outcome: PENDING - risk 76/100 (Medium)"]}], "started_at": "2026-11-19 16:41:14 UTC", "duration_ms": 3, "input_file": "submission.json", "followup_file": "followup.md", "followup_text": "# Action required to complete your vendor onboarding\n\n**To:** Jonas Weber <j.weber@ravensburger-logistik.de>\n**From:** AP Operations - Vendor Onboarding\n**Re:** Submission SUB-003 - Ravensburger Logistik GmbH\n**Run:** SUB-003-20261119-221114 - decision: PENDING - risk 76/100 (Medium)\n\nHi Jonas,\n\nThank you for submitting vendor onboarding for Ravensburger Logistik GmbH (SUB-003). Verification is underway - we need the 2 item(s) below from you before we can approve you as a vendor.\n\n1. **Name Mismatch Suspected** - Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).\n   *What we need:* Provide a bank-issued letter confirming the account is held by the legal entity, or correct the account name.\n2. **Currency Mismatch** - Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR).\n   *What we need:* Confirm the settlement currency; expected EUR for Germany.\n\nPlease reply with the requested items within 10 business days. Your application stays in *pending* status until then - this is not a rejection, we simply cannot complete verification with the current information.\n\n- AP Operations (automated verification)\n"}, {"run_id": "SUB-004-20261119-221114", "submission_id": "SUB-004", "label": "edge case 3 - valid-looking GSTIN that fails the checksum", "vendor_name": "Meridian Solar Energy Pvt Ltd", "country": "IN", "decision": "PENDING", "risk_score": 88, "risk_band": "Medium", "issues": [{"code": "TAX_ID_CHECKSUM_FAIL", "severity": "pending", "stage": "FORMAT", "message": "GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated.", "action": "Re-check the GSTIN against the GST certificate and re-upload the corrected certificate."}], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "OK", "findings": ["no findings"]}, {"name": "FORMAT", "status": "WARN", "findings": ["GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated."]}, {"name": "CONSISTENCY", "status": "OK", "findings": ["no findings"]}, {"name": "IDENTITY", "status": "OK", "findings": ["no findings"]}, {"name": "DECISION", "status": "WARN", "findings": ["1 issue(s) evaluated (reject: 0, pending: 1, info: 0)", "policy outcome: PENDING - risk 88/100 (Medium)"]}], "started_at": "2026-11-19 16:41:14 UTC", "duration_ms": 2, "input_file": "submission.json", "followup_file": "followup.md", "followup_text": "# Action required to complete your vendor onboarding\n\n**To:** Kavita Shah <kavita.shah@meridiansolar.in>\n**From:** AP Operations - Vendor Onboarding\n**Re:** Submission SUB-004 - Meridian Solar Energy Pvt Ltd\n**Run:** SUB-004-20261119-221114 - decision: PENDING - risk 88/100 (Medium)\n\nHi Kavita,\n\nThank you for submitting vendor onboarding for Meridian Solar Energy Pvt Ltd (SUB-004). Verification is underway - we need the 1 item(s) below from you before we can approve you as a vendor.\n\n1. **Tax Id Checksum Fail** - GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated.\n   *What we need:* Re-check the GSTIN against the GST certificate and re-upload the corrected certificate.\n\nPlease reply with the requested items within 10 business days. Your application stays in *pending* status until then - this is not a rejection, we simply cannot complete verification with the current information.\n\n- AP Operations (automated verification)\n"}, {"run_id": "SUB-005-20261119-221114", "submission_id": "SUB-005", "label": "edge case 4 - duplicate / suspected vendor fraud", "vendor_name": "Shree Balaji Industrial Fasteners", "country": "IN", "decision": "REJECTED", "risk_score": 0, "risk_band": "High", "issues": [{"code": "DOC_EXPIRED", "severity": "pending", "stage": "FORMAT", "message": "Document 'tax_certificate' expired on 2024-05-30.", "action": "Upload a current tax registration certificate."}, {"code": "DUPLICATE_TAX_ID", "severity": "reject", "stage": "IDENTITY", "message": "Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.", "action": ""}, {"code": "DUPLICATE_BANK_ACCOUNT", "severity": "reject", "stage": "IDENTITY", "message": "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor.", "action": ""}], "stages": [{"name": "INGEST", "status": "OK", "findings": ["loaded submission, structure valid"]}, {"name": "COMPLETENESS", "status": "OK", "findings": ["no findings"]}, {"name": "FORMAT", "status": "WARN", "findings": ["Document 'tax_certificate' expired on 2024-05-30."]}, {"name": "CONSISTENCY", "status": "OK", "findings": ["no findings"]}, {"name": "IDENTITY", "status": "FAIL", "findings": ["Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.", "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor."]}, {"name": "DECISION", "status": "FAIL", "findings": ["3 issue(s) evaluated (reject: 2, pending: 1, info: 0)", "policy outcome: REJECTED - risk 0/100 (High)"]}], "started_at": "2026-11-19 16:41:14 UTC", "duration_ms": 2, "input_file": "submission.json", "followup_file": "followup.md", "followup_text": "# Vendor onboarding decision: declined\n\n**To:** Sanjay Kumar <sanjay@shreebalajifasteners.co.in>\n**From:** AP Operations - Vendor Onboarding\n**Re:** Submission SUB-005 - Shree Balaji Industrial Fasteners\n**Run:** SUB-005-20261119-221114 - decision: REJECTED - risk 0/100 (High)\n\nHi Sanjay,\n\nThank you for submitting vendor onboarding for Shree Balaji Industrial Fasteners (SUB-005). After automated verification, we are not able to approve this application. The specific reasons are listed below.\n\n1. **Duplicate Tax Id** - Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.\n2. **Duplicate Bank Account** - Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor.\n\nIf you believe this decision was made in error, reply to this email to appeal. A member of the AP team will review your case manually within 2 business days.\n\n- AP Operations (automated verification)\n"}]};
+let RUNS = DATA.runs;
+const IS_LIVE = location.protocol === "http:" || location.protocol === "https:";
+const bandColor = {Low:"#3fb950", Medium:"#d29922", High:"#f85149"};
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const badge = d => `<span class="badge b-${d}">${d}</span>`;
+const VERDICT = {
+  APPROVED:{label:"REAL - verified vendor", cls:"v-REAL",
+    note:"Format, cross-field and identity checks all passed. The vendor can be activated."},
+  PENDING:{label:"NOT VERIFIED - needs more information", cls:"v-CHECK",
+    note:"Not proven fake: these findings are fixable. Send the follow-up letter, collect the missing or corrected items, then re-run."},
+  REJECTED:{label:"FAKE / FRAUD RISK - do not onboard", cls:"v-FAKE",
+    note:"Hard-stop signals (duplicate identity, restricted party or a severe mismatch). Nothing the vendor uploads in this run can clear it; the rejection includes a human appeal path."}
+};
+let activeTab = "form";
+let fileData = null;
+let lastRunId = "";
+
+function cards(){
+  const c = s => RUNS.filter(r => r.decision === s).length;
+  const avg = RUNS.length ? Math.round(RUNS.reduce((a,r)=>a+r.risk_score,0)/RUNS.length) : 0;
+  const cells = [["Total runs", RUNS.length],["Approved", c("APPROVED")],["Pending", c("PENDING")],["Rejected", c("REJECTED")]];
+  document.getElementById("cards").innerHTML =
+    cells.map(([l,n]) => `<div class="card"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("") +
+    `<div class="card"><div class="n">${avg}<span class="unit">/100</span></div><div class="l">avg risk score</div></div>`;
+}
+
+function table(){
+  const rows = RUNS.map((r,i) => `
+    <tr class="row${r.run_id === lastRunId ? " fresh" : ""}" onclick="show(${i})">
+      <td><code>${esc(r.run_id)}</code><div class="mut">${esc(r.label)}</div></td>
+      <td>${esc(r.vendor_name)}</td>
+      <td>${esc(r.country)}</td>
+      <td>${badge(r.decision)}</td>
+      <td><div class="riskwrap"><div class="riskbar"><i style="width:${r.risk_score}%;background:${bandColor[r.risk_band]}"></i></div><span>${r.risk_score} <span class="mut">${r.risk_band}</span></span></div></td>
+      <td>${r.issues.length}</td>
+      <td class="mut">${esc(r.started_at)}</td>
+    </tr>`).join("");
+  document.querySelector("#tbl tbody").innerHTML = rows ||
+    `<tr><td colspan="7" class="mut">No runs yet - verify a vendor above.</td></tr>`;
+}
+
+function stagesHtml(r){
+  return r.stages.map(s => `
+    <div class="stage"><span class="dot d-${s.status}"></span><div>
+      <div class="stname">${esc(s.name)}<span class="stag ${s.status}">${s.status}</span></div>
+      ${s.findings.map(f => `<div class="find">&ndash; ${esc(f)}</div>`).join("")}
+    </div></div>`).join("");
+}
+
+function issuesHtml(r){
+  if (!r.issues.length) return '<div class="mut">No issues - clean pass.</div>';
+  return r.issues.map(it => `
+    <div class="issue"><span class="chip sev-${esc(it.severity)}">${esc(it.severity)}</span>
+      <div><code>${esc(it.code)}</code><div>${esc(it.message)}</div>
+      ${it.action ? `<div class="act">&rarr; ${esc(it.action)}</div>` : ""}</div>
+    </div>`).join("");
+}
+
+function letterHtml(r){
+  return r.followup_text
+    ? `<h3>Follow-up sent to vendor</h3><pre>${esc(r.followup_text)}</pre>` : "";
+}
+
+function renderVerdict(r){
+  const v = VERDICT[r.decision] || VERDICT.PENDING;
+  const box = document.getElementById("verdictbox");
+  box.innerHTML = `
+    <div class="verdict ${v.cls}">
+      <div class="vhead">
+        <div>
+          <div class="vlabel">${v.label}</div>
+          <div class="vnote">${v.note}</div>
+        </div>
+        <div class="vright">${badge(r.decision)}
+          <div class="vrisk" style="color:${bandColor[r.risk_band]}">${r.risk_score}<span>/100 ${esc(r.risk_band)} risk</span></div>
+        </div>
+      </div>
+      <div class="vmeta">
+        <span>vendor: <b>${esc(r.vendor_name)}</b> (${esc(r.country)})</span>
+        <span>run: <code>${esc(r.run_id)}</code></span>
+        <span>${r.duration_ms} ms</span>
+        <span>${esc(r.started_at)}</span>
+      </div>
+      <h3>Pipeline stages</h3>${stagesHtml(r)}
+      <h3>Issues (${r.issues.length})</h3>${issuesHtml(r)}
+      ${letterHtml(r)}
+    </div>`;
+  box.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+function show(i){
+  const r = RUNS[i];
+  const d = document.getElementById("detail");
+  d.style.display = "block";
+  d.innerHTML = `
+    <div class="dhead"><div>
+      <div class="mut">${esc(r.run_id)}${r.label ? " &middot; " + esc(r.label) : ""}</div>
+      <h2>${esc(r.vendor_name)} <span class="mut">(${esc(r.country)})</span></h2>
+    </div><div class="dright">${badge(r.decision)}
+      <div class="riskbig" style="color:${bandColor[r.risk_band]}">${r.risk_score}<span>/100 ${esc(r.risk_band)} risk</span></div>
+    </div></div>
+    <h3>Pipeline stages</h3>${stagesHtml(r)}
+    <h3>Issues (${r.issues.length})</h3>${issuesHtml(r)}
+    <div class="meta">input: ${esc(r.input_file)} &middot; completed in ${r.duration_ms} ms &middot; ${esc(r.started_at)}</div>
+    ${letterHtml(r)}`;
+  d.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* ---------------------------- input handling ---------------------------- */
+function setPath(obj, path, value){
+  const parts = path.split(".");
+  let node = obj;
+  for (let i = 0; i < parts.length - 1; i++) node = node[parts[i]] = node[parts[i]] || {};
+  node[parts[parts.length - 1]] = value;
+}
+
+function collectForm(){
+  const sub = {};
+  document.querySelectorAll("#vendorform [data-field]").forEach(el => {
+    const val = (el.value || "").trim();
+    if (val) setPath(sub, el.dataset.field, val);
+  });
+  const docs = [];
+  document.querySelectorAll("#vendorform .docrow").forEach(row => {
+    const entry = {type: row.dataset.doc};
+    let any = false;
+    row.querySelectorAll("[data-docfield]").forEach(inp => {
+      const val = (inp.value || "").trim();
+      if (val) { entry[inp.dataset.docfield] = val; any = true; }
+    });
+    if (any) docs.push(entry);
+  });
+  if (docs.length) sub.documents = docs;
+  return sub;
+}
+
+function setForm(sub){
+  document.querySelectorAll("#vendorform [data-field]").forEach(el => {
+    const parts = el.dataset.field.split(".");
+    let node = sub;
+    for (let i = 0; i < parts.length - 1 && node; i++) node = node[parts[i]];
+    const val = node ? node[parts[parts.length - 1]] : "";
+    el.value = val == null ? "" : val;
+  });
+  document.querySelectorAll("#vendorform .docrow").forEach(row => {
+    const doc = (sub.documents || []).find(d => d.type === row.dataset.doc) || {};
+    row.querySelectorAll("[data-docfield]").forEach(inp => {
+      inp.value = doc[inp.dataset.docfield] || "";
+    });
+  });
+  syncCodeFields();
+}
+
+function syncCodeFields(){
+  const country = document.getElementById("countryselect").value;
+  document.querySelectorAll(".code-IN").forEach(el => el.classList.toggle("hidden", country !== "IN"));
+  document.querySelectorAll(".code-US").forEach(el => el.classList.toggle("hidden", country !== "US"));
+  document.querySelectorAll(".code-IBAN").forEach(el => el.classList.toggle("hidden", !["GB","DE","AE"].includes(country)));
+}
+
+function switchTab(name){
+  activeTab = name;
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  document.querySelectorAll(".pane").forEach(p => p.classList.toggle("active", p.id === "pane-" + name));
+}
+
+function showError(msg){
+  const box = document.getElementById("verdictbox");
+  box.innerHTML = `<div class="verdict"><div class="vlabel" style="color:var(--red);font-size:16px">Could not verify</div>
+    <div class="vnote">${esc(msg)}</div></div>`;
+  document.getElementById("progress").classList.add("hidden");
+}
+
+async function refreshRuns(){
+  try {
+    const res = await fetch("/api/runs", {cache:"no-store"});
+    if (!res.ok) return;
+    const data = await res.json();
+    RUNS = data.runs || [];
+    cards(); table();
+  } catch (_) { /* static mode: keep embedded history */ }
+}
+
+async function pollJob(jobId){
+  const progress = document.getElementById("progress");
+  const text = document.getElementById("progresstext");
+  const started = Date.now();
+  for (;;) {
+    let job;
+    try {
+      const res = await fetch("/api/jobs/" + encodeURIComponent(jobId), {cache:"no-store"});
+      job = await res.json();
+      if (!res.ok) throw new Error(job.error || res.statusText);
+    } catch (exc) {
+      showError("Lost contact with the verification server: " + exc.message);
+      return;
+    }
+    if (job.status === "done") {
+      progress.classList.add("hidden");
+      lastRunId = job.result.run_id;
+      renderVerdict(job.result);
+      await refreshRuns();
+      document.getElementById("statushint").textContent = "verification complete";
+      return;
+    }
+    if (job.status === "error") {
+      showError(job.error || "the pipeline failed");
+      return;
+    }
+    text.textContent = `Running pipeline (${job.status})... ${((Date.now() - started) / 1000).toFixed(1)}s`;
+    await new Promise(resolve => setTimeout(resolve, 550));
+  }
+}
+
+async function verify(){
+  if (!IS_LIVE) {
+    showError("Live checking needs the local server. Run 'python server.py' in the project folder and open the URL it prints.");
+    return;
+  }
+  const btn = document.getElementById("verifybtn");
+  const body = {};
+  if (activeTab === "form") {
+    body.mode = "form"; body.submission = collectForm();
+  } else if (activeTab === "json") {
+    const raw = document.getElementById("jsoninput").value.trim();
+    if (!raw) return showError("Paste a JSON submission first.");
+    try { body.mode = "json"; body.submission = JSON.parse(raw); }
+    catch (exc) { return showError("That is not valid JSON: " + exc.message); }
+    if (!body.submission || typeof body.submission !== "object" || Array.isArray(body.submission))
+      return showError("JSON input must be an object.");
+  } else if (activeTab === "text") {
+    const raw = document.getElementById("textinput").value.trim();
+    if (!raw) return showError("Paste labelled text first.");
+    body.mode = "text"; body.text = raw;
+  } else {
+    if (!fileData) return showError("Choose a .json or .txt file first.");
+    if (fileData.kind === "json") { body.mode = "json"; body.submission = fileData.value; }
+    else { body.mode = "text"; body.text = fileData.value; }
+  }
+
+  btn.disabled = true;
+  document.getElementById("verdictbox").innerHTML = "";
+  document.getElementById("statushint").textContent = "";
+  document.getElementById("progress").classList.remove("hidden");
+  document.getElementById("progresstext").textContent = "Queuing verification...";
+  try {
+    const res = await fetch("/api/verify", {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || res.statusText);
+    await pollJob(data.job_id);
+  } catch (exc) {
+    showError(exc.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ------------------------------ examples -------------------------------- */
+const EXAMPLES = {
+  real: {
+    submission_id: "WEB-REAL-001",
+    legal_name: "Anvi Precision Components Pvt Ltd",
+    country: "IN",
+    registered_address: "Plot 14, MIDC Andheri East, Mumbai 400093, India",
+    tax_id: "27AAAPZ1234C1Z0",
+    contact: {name:"Rohit Anvekar", email:"rohit@anviprecision.in", phone:"+91 98200 12345"},
+    banking: {account_name:"Anvi Precision Components Pvt Ltd", account_number:"50100234567890",
+              bank_name:"HDFC Bank", ifsc:"HDFC0000123", bank_country:"IN", currency:"INR"},
+    documents: [
+      {type:"tax_certificate", filename:"gst_certificate.pdf", issued:"2025-04-10", expires:"2027-08-30"},
+      {type:"bank_account_letter", filename:"hdfc_bank_letter.pdf", issued:"2026-10-02"},
+      {type:"incorporation_certificate", filename:"coi_mca.pdf", issued:"2019-06-21"}
+    ]
+  },
+  fraud: {
+    submission_id: "WEB-FRAUD-001",
+    legal_name: "Shree Balaji Industrial Fasteners",
+    country: "IN",
+    registered_address: "B-22, Industrial Area Phase II, Ludhiana 141003, India",
+    tax_id: "24AAECS5678K1ZV",
+    contact: {name:"Sanjay Kumar", email:"sanjay@shreebalajifasteners.co.in", phone:"+91 98761 22334"},
+    banking: {account_name:"Shree Balaji Industrial Fasteners", account_number:"089501023456789",
+              bank_name:"State Bank of India", ifsc:"SBIN0004321", bank_country:"IN", currency:"INR"},
+    documents: [
+      {type:"tax_certificate", filename:"gst_reissued_2026.pdf", issued:"2024-03-01", expires:"2024-05-30"},
+      {type:"bank_account_letter", filename:"sbi_letter.pdf", issued:"2026-11-01"},
+      {type:"incorporation_certificate", filename:"coi_reprint.pdf", issued:"2018-01-12"}
+    ]
+  },
+  incomplete: {
+    submission_id: "WEB-PENDING-001",
+    legal_name: "Nova Trace Logistics LLP",
+    country: "IN",
+    tax_id: "27AAAPZ1234C1Z0",
+    contact: {name:"Meera Nair", email:"meera@novatrace.in"},
+    banking: {account_name:"Nova Trace Logistics LLP", account_number:"50100999888777",
+              bank_name:"ICICI Bank", bank_country:"IN", currency:"INR"},
+    documents: [{type:"tax_certificate", filename:"gst.pdf", issued:"2025-01-10", expires:"2028-01-09"}]
+  }
+};
+
+function loadExample(name){
+  if (!name) return;
+  const sub = JSON.parse(JSON.stringify(EXAMPLES[name]));
+  switchTab("form");
+  setForm(sub);
+  document.getElementById("examplepick").value = "";
+  document.getElementById("statushint").textContent = "example loaded - press Run verification";
+}
+
+/* ------------------------------- wiring --------------------------------- */
+document.querySelectorAll(".tab").forEach(btn =>
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+document.getElementById("verifybtn").addEventListener("click", verify);
+document.getElementById("examplepick").addEventListener("change", e => loadExample(e.target.value));
+document.getElementById("clearbtn").addEventListener("click", () => {
+  document.getElementById("verdictbox").innerHTML = "";
+  document.getElementById("statushint").textContent = "";
+});
+document.getElementById("countryselect").addEventListener("change", syncCodeFields);
+
+document.getElementById("fileinput").addEventListener("change", ev => {
+  const file = ev.target.files && ev.target.files[0];
+  fileData = null;
+  const preview = document.getElementById("filepreview");
+  if (!file) { preview.classList.add("hidden"); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = String(reader.result || "");
+    preview.textContent = text.length > 4000 ? text.slice(0, 4000) + "\n…" : text;
+    preview.classList.remove("hidden");
+    if (file.name.toLowerCase().endsWith(".json") || /^\s*\{/.test(text)) {
+      try { fileData = {kind:"json", value: JSON.parse(text)}; document.getElementById("statushint").textContent = "JSON file loaded"; }
+      catch (exc) { preview.textContent = "Not valid JSON: " + exc.message + "\n\n" + preview.textContent; }
+    } else {
+      fileData = {kind:"text", value: text};
+      document.getElementById("statushint").textContent = "text file loaded";
+    }
+  };
+  reader.readAsText(file);
+});
+
+async function boot(){
+  const state = document.getElementById("srvstate");
+  const btn = document.getElementById("verifybtn");
+  if (!IS_LIVE) {
+    state.textContent = "history only - run python server.py for live checks";
+    state.classList.add("offline");
+    btn.disabled = true;
+    btn.title = "Start the local server to enable live verification";
+    return;
+  }
+  try {
+    const res = await fetch("/api/health", {cache:"no-store"});
+    const data = await res.json();
+    if (data.ok) {
+      state.textContent = `live - pipeline ready (${data.runs} runs)`;
+      state.classList.add("live");
+      document.getElementById("statushint").textContent = "";
+      return;
+    }
+  } catch (_) {}
+  state.textContent = "history only - live pipeline not hosted here";
+  state.classList.add("offline");
+  btn.disabled = true;
+  btn.title = "This is a static snapshot; deploy server.py for live checks";
+  document.getElementById("statushint").textContent =
+    "static snapshot: the history below is real, new checks need the hosted Python app";
+}
+
+cards(); table(); syncCodeFields(); boot();
+</script>
+</body>
+</html>

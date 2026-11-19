@@ -1,0 +1,27 @@
+{
+  "submission_id": "SUB-004",
+  "label": "edge case 3 - valid-looking GSTIN that fails the checksum",
+  "submitted_at": "2026-11-17",
+  "legal_name": "Meridian Solar Energy Pvt Ltd",
+  "country": "IN",
+  "registered_address": "Unit 3, GIDC Vatva, Ahmedabad 382445, India",
+  "tax_id": "27AAEPM9876R1ZX",
+  "contact": {
+    "name": "Kavita Shah",
+    "email": "kavita.shah@meridiansolar.in",
+    "phone": "+91 79400 22334"
+  },
+  "banking": {
+    "account_name": "Meridian Solar Energy Pvt Ltd",
+    "account_number": "0778812345678",
+    "bank_name": "Axis Bank",
+    "ifsc": "AXIS0007788",
+    "bank_country": "IN",
+    "currency": "INR"
+  },
+  "documents": [
+    {"type": "tax_certificate", "filename": "gst_cert_scan.pdf", "issued": "2026-02-11", "expires": "2028-02-10"},
+    {"type": "bank_account_letter", "filename": "axis_confirmation.pdf", "issued": "2026-08-30"},
+    {"type": "incorporation_certificate", "filename": "coi_mca_meridian.pdf", "issued": "2022-07-19"}
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "run_id": "SUB-005-20261119-221114",
+  "submission_id": "SUB-005",
+  "label": "edge case 4 - duplicate / suspected vendor fraud",
+  "vendor_name": "Shree Balaji Industrial Fasteners",
+  "country": "IN",
+  "decision": "REJECTED",
+  "risk_score": 0,
+  "risk_band": "High",
+  "issues": [
+    {
+      "code": "DOC_EXPIRED",
+      "severity": "pending",
+      "stage": "FORMAT",
+      "message": "Document 'tax_certificate' expired on 2024-05-30.",
+      "action": "Upload a current tax registration certificate."
+    },
+    {
+      "code": "DUPLICATE_TAX_ID",
+      "severity": "reject",
+      "stage": "IDENTITY",
+      "message": "Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.",
+      "action": ""
+    },
+    {
+      "code": "DUPLICATE_BANK_ACCOUNT",
+      "severity": "reject",
+      "stage": "IDENTITY",
+      "message": "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor.",
+      "action": ""
+    }
+  ],
+  "stages": [
+    {
+      "name": "INGEST",
+      "status": "OK",
+      "findings": [
+        "loaded submission, structure valid"
+      ]
+    },
+    {
+      "name": "COMPLETENESS",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "FORMAT",
+      "status": "WARN",
+      "findings": [
+        "Document 'tax_certificate' expired on 2024-05-30."
+      ]
+    },
+    {
+      "name": "CONSISTENCY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "IDENTITY",
+      "status": "FAIL",
+      "findings": [
+        "Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.",
+        "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor."
+      ]
+    },
+    {
+      "name": "DECISION",
+      "status": "FAIL",
+      "findings": [
+        "3 issue(s) evaluated (reject: 2, pending: 1, info: 0)",
+        "policy outcome: REJECTED - risk 0/100 (High)"
+      ]
+    }
+  ],
+  "started_at": "2026-11-19 16:41:14 UTC",
+  "duration_ms": 2,
+  "input_file": "submission.json",
+  "followup_file": "followup.md"
+}

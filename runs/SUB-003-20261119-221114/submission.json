@@ -1,0 +1,27 @@
+{
+  "submission_id": "SUB-003",
+  "label": "edge case 2 - subtle cross-field inconsistencies",
+  "submitted_at": "2026-11-17",
+  "legal_name": "Ravensburger Logistik GmbH",
+  "country": "DE",
+  "registered_address": "Lindenhofstrasse 8, 88299 Vorarlberg / registered Munich, Germany",
+  "tax_id": "DE811907980",
+  "contact": {
+    "name": "Jonas Weber",
+    "email": "j.weber@ravensburger-logistik.de",
+    "phone": "+49 89 1234 5678"
+  },
+  "banking": {
+    "account_name": "Ravensburger Spedition GmbH",
+    "account_number": "0532013000",
+    "bank_name": "Deutsche Bank",
+    "iban": "DE89370400440532013000",
+    "bank_country": "DE",
+    "currency": "USD"
+  },
+  "documents": [
+    {"type": "tax_certificate", "filename": "vat_ues_de811907980.pdf", "issued": "2025-01-20", "expires": "2027-01-19"},
+    {"type": "bank_account_letter", "filename": "db_kontobestaetigung.pdf", "issued": "2026-09-15"},
+    {"type": "incorporation_certificate", "filename": "handelsregister_mbH.pdf", "issued": "2017-03-08"}
+  ]
+}

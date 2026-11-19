@@ -1,0 +1,3 @@
+# VendorGuard has no third-party dependencies (Python standard library only).
+# This file exists so free Python hosts (Render, Railway, etc.) detect the
+# project as a Python web service. It is intentionally empty otherwise.

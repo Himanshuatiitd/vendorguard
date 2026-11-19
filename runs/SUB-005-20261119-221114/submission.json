@@ -1,0 +1,27 @@
+{
+  "submission_id": "SUB-005",
+  "label": "edge case 4 - duplicate / suspected vendor fraud",
+  "submitted_at": "2026-11-17",
+  "legal_name": "Shree Balaji Industrial Fasteners",
+  "country": "IN",
+  "registered_address": "B-22, Industrial Area Phase II, Ludhiana 141003, India",
+  "tax_id": "24AAECS5678K1ZV",
+  "contact": {
+    "name": "Sanjay Kumar",
+    "email": "sanjay@shreebalajifasteners.co.in",
+    "phone": "+91 98761 22334"
+  },
+  "banking": {
+    "account_name": "Shree Balaji Industrial Fasteners",
+    "account_number": "089501023456789",
+    "bank_name": "State Bank of India",
+    "ifsc": "SBIN0004321",
+    "bank_country": "IN",
+    "currency": "INR"
+  },
+  "documents": [
+    {"type": "tax_certificate", "filename": "gst_reissued_2026.pdf", "issued": "2024-03-01", "expires": "2024-05-30"},
+    {"type": "bank_account_letter", "filename": "sbi_letter.pdf", "issued": "2026-11-01"},
+    {"type": "incorporation_certificate", "filename": "coi_reprint.pdf", "issued": "2018-01-12"}
+  ]
+}

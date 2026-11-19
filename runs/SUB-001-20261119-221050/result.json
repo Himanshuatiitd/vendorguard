@@ -1,0 +1,60 @@
+{
+  "run_id": "SUB-001-20261119-221050",
+  "submission_id": "SUB-001",
+  "label": "happy path - complete, consistent, valid",
+  "vendor_name": "Anvi Precision Components Pvt Ltd",
+  "country": "IN",
+  "decision": "APPROVED",
+  "risk_score": 100,
+  "risk_band": "Low",
+  "issues": [],
+  "stages": [
+    {
+      "name": "INGEST",
+      "status": "OK",
+      "findings": [
+        "loaded submission, structure valid"
+      ]
+    },
+    {
+      "name": "COMPLETENESS",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "FORMAT",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "CONSISTENCY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "IDENTITY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "DECISION",
+      "status": "OK",
+      "findings": [
+        "0 issue(s) evaluated (reject: 0, pending: 0, info: 0)",
+        "policy outcome: APPROVED - risk 100/100 (Low)"
+      ]
+    }
+  ],
+  "started_at": "2026-11-19 16:40:50 UTC",
+  "duration_ms": 22,
+  "input_file": "submission.json",
+  "followup_file": ""
+}

@@ -1,0 +1,18 @@
+# Render Blueprint: free live demo of the VendorGuard dashboard.
+# 1. Push this folder to a GitHub repository.
+# 2. On https://render.com choose "New > Blueprint" and select the repo.
+# 3. Render creates the service below and gives you a public https URL.
+#
+# Free instances sleep after ~15 minutes of inactivity; the first visit after
+# that takes ~30-60s to wake up. runs/ is ephemeral on the free plan.
+services:
+  - type: web
+    name: vendorguard
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python server.py --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"

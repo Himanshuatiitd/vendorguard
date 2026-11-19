@@ -1,0 +1,76 @@
+{
+  "run_id": "SUB-003-20261119-221114",
+  "submission_id": "SUB-003",
+  "label": "edge case 2 - subtle cross-field inconsistencies",
+  "vendor_name": "Ravensburger Logistik GmbH",
+  "country": "DE",
+  "decision": "PENDING",
+  "risk_score": 76,
+  "risk_band": "Medium",
+  "issues": [
+    {
+      "code": "NAME_MISMATCH_SUSPECTED",
+      "severity": "pending",
+      "stage": "CONSISTENCY",
+      "message": "Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).",
+      "action": "Provide a bank-issued letter confirming the account is held by the legal entity, or correct the account name."
+    },
+    {
+      "code": "CURRENCY_MISMATCH",
+      "severity": "pending",
+      "stage": "CONSISTENCY",
+      "message": "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR).",
+      "action": "Confirm the settlement currency; expected EUR for Germany."
+    }
+  ],
+  "stages": [
+    {
+      "name": "INGEST",
+      "status": "OK",
+      "findings": [
+        "loaded submission, structure valid"
+      ]
+    },
+    {
+      "name": "COMPLETENESS",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "FORMAT",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "CONSISTENCY",
+      "status": "WARN",
+      "findings": [
+        "Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).",
+        "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR)."
+      ]
+    },
+    {
+      "name": "IDENTITY",
+      "status": "OK",
+      "findings": [
+        "no findings"
+      ]
+    },
+    {
+      "name": "DECISION",
+      "status": "WARN",
+      "findings": [
+        "2 issue(s) evaluated (reject: 0, pending: 2, info: 0)",
+        "policy outcome: PENDING - risk 76/100 (Medium)"
+      ]
+    }
+  ],
+  "started_at": "2026-11-19 16:41:14 UTC",
+  "duration_ms": 3,
+  "input_file": "submission.json",
+  "followup_file": "followup.md"
+}

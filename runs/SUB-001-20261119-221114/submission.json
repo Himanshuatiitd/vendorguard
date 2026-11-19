@@ -1,0 +1,27 @@
+{
+  "submission_id": "SUB-001",
+  "label": "happy path - complete, consistent, valid",
+  "submitted_at": "2026-11-17",
+  "legal_name": "Anvi Precision Components Pvt Ltd",
+  "country": "IN",
+  "registered_address": "Plot 14, MIDC Andheri East, Mumbai 400093, India",
+  "tax_id": "27AAAPZ1234C1Z0",
+  "contact": {
+    "name": "Rohit Anvekar",
+    "email": "rohit@anviprecision.in",
+    "phone": "+91 98200 12345"
+  },
+  "banking": {
+    "account_name": "Anvi Precision Components Pvt Ltd",
+    "account_number": "50100234567890",
+    "bank_name": "HDFC Bank",
+    "ifsc": "HDFC0000123",
+    "bank_country": "IN",
+    "currency": "INR"
+  },
+  "documents": [
+    {"type": "tax_certificate", "filename": "gst_certificate_27AAAPZ1234C1Z0.pdf", "issued": "2025-04-10", "expires": "2027-08-30"},
+    {"type": "bank_account_letter", "filename": "hdfc_bank_letter.pdf", "issued": "2026-10-02"},
+    {"type": "incorporation_certificate", "filename": "coi_mca.pdf", "issued": "2019-06-21"}
+  ]
+}

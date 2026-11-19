@@ -1,0 +1,433 @@
+[
+  {
+    "run_id": "SUB-001-20261119-221050",
+    "submission_id": "SUB-001",
+    "label": "happy path - complete, consistent, valid",
+    "vendor_name": "Anvi Precision Components Pvt Ltd",
+    "country": "IN",
+    "decision": "APPROVED",
+    "risk_score": 100,
+    "risk_band": "Low",
+    "issues": [],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "OK",
+        "findings": [
+          "0 issue(s) evaluated (reject: 0, pending: 0, info: 0)",
+          "policy outcome: APPROVED - risk 100/100 (Low)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:40:50 UTC",
+    "duration_ms": 22,
+    "input_file": "submission.json",
+    "followup_file": ""
+  },
+  {
+    "run_id": "SUB-001-20261119-221114",
+    "submission_id": "SUB-001",
+    "label": "happy path - complete, consistent, valid",
+    "vendor_name": "Anvi Precision Components Pvt Ltd",
+    "country": "IN",
+    "decision": "APPROVED",
+    "risk_score": 100,
+    "risk_band": "Low",
+    "issues": [],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "OK",
+        "findings": [
+          "0 issue(s) evaluated (reject: 0, pending: 0, info: 0)",
+          "policy outcome: APPROVED - risk 100/100 (Low)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:41:14 UTC",
+    "duration_ms": 31,
+    "input_file": "submission.json",
+    "followup_file": ""
+  },
+  {
+    "run_id": "SUB-002-20261119-221114",
+    "submission_id": "SUB-002",
+    "label": "edge case 1 - incomplete submission",
+    "vendor_name": "Novatech Components LLP",
+    "country": "IN",
+    "decision": "PENDING",
+    "risk_score": 64,
+    "risk_band": "Medium",
+    "issues": [
+      {
+        "code": "MISSING_FIELD",
+        "severity": "pending",
+        "stage": "COMPLETENESS",
+        "message": "Required field 'contact.phone' is missing.",
+        "action": "Provide the contact phone ('contact.phone')."
+      },
+      {
+        "code": "MISSING_FIELD",
+        "severity": "pending",
+        "stage": "COMPLETENESS",
+        "message": "Required field 'banking.ifsc' is missing.",
+        "action": "Provide the bank ifsc required for vendors in India ('banking.ifsc')."
+      },
+      {
+        "code": "MISSING_DOCUMENT",
+        "severity": "pending",
+        "stage": "COMPLETENESS",
+        "message": "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached.",
+        "action": "Upload the bank-issued account confirmation letter."
+      }
+    ],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "WARN",
+        "findings": [
+          "Required field 'contact.phone' is missing.",
+          "Required field 'banking.ifsc' is missing.",
+          "Required document 'bank_account_letter' (bank-issued account confirmation letter) was not attached."
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "WARN",
+        "findings": [
+          "3 issue(s) evaluated (reject: 0, pending: 3, info: 0)",
+          "policy outcome: PENDING - risk 64/100 (Medium)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:41:14 UTC",
+    "duration_ms": 6,
+    "input_file": "submission.json",
+    "followup_file": "followup.md"
+  },
+  {
+    "run_id": "SUB-003-20261119-221114",
+    "submission_id": "SUB-003",
+    "label": "edge case 2 - subtle cross-field inconsistencies",
+    "vendor_name": "Ravensburger Logistik GmbH",
+    "country": "DE",
+    "decision": "PENDING",
+    "risk_score": 76,
+    "risk_band": "Medium",
+    "issues": [
+      {
+        "code": "NAME_MISMATCH_SUSPECTED",
+        "severity": "pending",
+        "stage": "CONSISTENCY",
+        "message": "Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).",
+        "action": "Provide a bank-issued letter confirming the account is held by the legal entity, or correct the account name."
+      },
+      {
+        "code": "CURRENCY_MISMATCH",
+        "severity": "pending",
+        "stage": "CONSISTENCY",
+        "message": "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR).",
+        "action": "Confirm the settlement currency; expected EUR for Germany."
+      }
+    ],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "WARN",
+        "findings": [
+          "Bank account holder 'Ravensburger Spedition GmbH' only partially matches the legal entity 'Ravensburger Logistik GmbH' (match 79%).",
+          "Settlement currency 'USD' is unusual for a vendor registered in Germany (expected EUR)."
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "WARN",
+        "findings": [
+          "2 issue(s) evaluated (reject: 0, pending: 2, info: 0)",
+          "policy outcome: PENDING - risk 76/100 (Medium)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:41:14 UTC",
+    "duration_ms": 3,
+    "input_file": "submission.json",
+    "followup_file": "followup.md"
+  },
+  {
+    "run_id": "SUB-004-20261119-221114",
+    "submission_id": "SUB-004",
+    "label": "edge case 3 - valid-looking GSTIN that fails the checksum",
+    "vendor_name": "Meridian Solar Energy Pvt Ltd",
+    "country": "IN",
+    "decision": "PENDING",
+    "risk_score": 88,
+    "risk_band": "Medium",
+    "issues": [
+      {
+        "code": "TAX_ID_CHECKSUM_FAIL",
+        "severity": "pending",
+        "stage": "FORMAT",
+        "message": "GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated.",
+        "action": "Re-check the GSTIN against the GST certificate and re-upload the corrected certificate."
+      }
+    ],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "WARN",
+        "findings": [
+          "GSTIN '27AAEPM9876R1ZX' passes the format check but fails its mod-36 check digit - the number is mistyped or fabricated."
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "WARN",
+        "findings": [
+          "1 issue(s) evaluated (reject: 0, pending: 1, info: 0)",
+          "policy outcome: PENDING - risk 88/100 (Medium)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:41:14 UTC",
+    "duration_ms": 2,
+    "input_file": "submission.json",
+    "followup_file": "followup.md"
+  },
+  {
+    "run_id": "SUB-005-20261119-221114",
+    "submission_id": "SUB-005",
+    "label": "edge case 4 - duplicate / suspected vendor fraud",
+    "vendor_name": "Shree Balaji Industrial Fasteners",
+    "country": "IN",
+    "decision": "REJECTED",
+    "risk_score": 0,
+    "risk_band": "High",
+    "issues": [
+      {
+        "code": "DOC_EXPIRED",
+        "severity": "pending",
+        "stage": "FORMAT",
+        "message": "Document 'tax_certificate' expired on 2024-05-30.",
+        "action": "Upload a current tax registration certificate."
+      },
+      {
+        "code": "DUPLICATE_TAX_ID",
+        "severity": "reject",
+        "stage": "IDENTITY",
+        "message": "Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.",
+        "action": ""
+      },
+      {
+        "code": "DUPLICATE_BANK_ACCOUNT",
+        "severity": "reject",
+        "stage": "IDENTITY",
+        "message": "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor.",
+        "action": ""
+      }
+    ],
+    "stages": [
+      {
+        "name": "INGEST",
+        "status": "OK",
+        "findings": [
+          "loaded submission, structure valid"
+        ]
+      },
+      {
+        "name": "COMPLETENESS",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "FORMAT",
+        "status": "WARN",
+        "findings": [
+          "Document 'tax_certificate' expired on 2024-05-30."
+        ]
+      },
+      {
+        "name": "CONSISTENCY",
+        "status": "OK",
+        "findings": [
+          "no findings"
+        ]
+      },
+      {
+        "name": "IDENTITY",
+        "status": "FAIL",
+        "findings": [
+          "Tax ID already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). A different legal name claiming the same tax registration is a fraud pattern.",
+          "Bank account already registered to approved vendor V-2025-014 (Shree Balaji Fasteners Pvt Ltd). Payments to this account would duplicate an existing vendor."
+        ]
+      },
+      {
+        "name": "DECISION",
+        "status": "FAIL",
+        "findings": [
+          "3 issue(s) evaluated (reject: 2, pending: 1, info: 0)",
+          "policy outcome: REJECTED - risk 0/100 (High)"
+        ]
+      }
+    ],
+    "started_at": "2026-11-19 16:41:14 UTC",
+    "duration_ms": 2,
+    "input_file": "submission.json",
+    "followup_file": "followup.md"
+  }
+]

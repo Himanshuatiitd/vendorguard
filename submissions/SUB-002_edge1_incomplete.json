@@ -1,0 +1,24 @@
+{
+  "submission_id": "SUB-002",
+  "label": "edge case 1 - incomplete submission",
+  "submitted_at": "2026-11-17",
+  "legal_name": "Novatech Components LLP",
+  "country": "IN",
+  "registered_address": "Survey 42, Kothrud, Pune 411038, India",
+  "tax_id": "29AAGCN1234F1ZN",
+  "contact": {
+    "name": "Meera Nair",
+    "email": "meera@novatechcomponents.in"
+  },
+  "banking": {
+    "account_name": "Novatech Components LLP",
+    "account_number": "00432198765432",
+    "bank_name": "ICICI Bank",
+    "bank_country": "IN",
+    "currency": "INR"
+  },
+  "documents": [
+    {"type": "tax_certificate", "filename": "gstin_29AAGCN1234F1ZN.pdf", "issued": "2024-11-05", "expires": "2027-03-31"},
+    {"type": "incorporation_certificate", "filename": "llp_registration.pdf", "issued": "2021-02-14"}
+  ]
+}

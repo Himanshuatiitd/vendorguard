@@ -1,0 +1,23 @@
+{
+  "_note": "Simulated vendor master (already-approved vendors) used for duplicate detection. Bank account numbers are stored as SHA-256 prefixes of the digit string, never in the clear. In production this record store is the ERP / procurement system.",
+  "vendors": [
+    {
+      "vendor_id": "V-2025-014",
+      "legal_name": "Shree Balaji Fasteners Pvt Ltd",
+      "country": "IN",
+      "tax_id": "24AAECS5678K1ZV",
+      "bank_account_ref": "4cf3ceb268ce7290",
+      "status": "approved",
+      "approved_on": "2025-06-11"
+    },
+    {
+      "vendor_id": "V-2025-031",
+      "legal_name": "Kraftwerk Components GmbH",
+      "country": "DE",
+      "tax_id": "DE812345678",
+      "bank_account_ref": "3f210c73ede83297",
+      "status": "approved",
+      "approved_on": "2025-09-02"
+    }
+  ]
+}
